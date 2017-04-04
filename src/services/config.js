@@ -1,4 +1,4 @@
-export class Config {
+class Config {
   constructor() {
     this.sort = '+date';
     this.emailAddress = undefined;
@@ -14,9 +14,13 @@ export class Config {
 
   load() {
     try {
-      Config(...JSON.parse(sessionStorage.getItem('appConfig')));
+      Object.assign(this, {
+        ...JSON.parse(sessionStorage.getItem('appConfig'))
+      });
     } catch (error) {
       console.log(error);
     }
   }
 }
+
+export let config = new Config();

@@ -1,9 +1,8 @@
-import { Config } from './config';
+import { config } from './config';
 /**
  * This service emulates an Authentication Service.
  */
-const config = new Config();
-export class AuthService {
+class AuthService {
   constructor() {
     this.usernames = ['admin', 'administrator'];
   }
@@ -39,4 +38,8 @@ export class AuthService {
     config.save();
   }
 }
+
+export let authService = new AuthService();
+
+
 

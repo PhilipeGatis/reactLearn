@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Col, Row, Grid } from 'react-bootstrap';
 
-import { AuthService } from '../services/auth';
-import { Config } from '../services/config';
+import { authService } from '../services/auth';
+import { config } from '../services/config';
 
 import { LoginForm } from '../components/login-form/component';
 
-const authService = new AuthService();
 export class Login extends Component {
   static propTypes = {
     resolves: PropTypes.shape({
@@ -18,7 +17,7 @@ export class Login extends Component {
     super(props);
     this.usernames = authService.usernames;
     this.state = {
-      username: Config.emailAddress || '',
+      username: config.emailAddress || '',
       password: 'password',
       authenticating: false,
       errorMessage: '',
