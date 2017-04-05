@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Panel } from 'react-bootstrap';
 
 export class ProjectEdit extends Component {
   render() {
     return (
       <Row>
         <Col md={3}>
-          <h4>Projeto: {this.props.resolves.projectId}</h4>
-          <div>Arvore</div>
+          <Panel header={`Projeto: ${this.props.resolves.projectId}`}>
+            Panel content
+          </Panel>
         </Col>
         <Col md={9}>
           <div>content</div>
