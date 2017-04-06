@@ -15,7 +15,7 @@ class Config {
   load() {
     try {
       Object.assign(this, {
-        ...JSON.parse(sessionStorage.getItem('appConfig'))
+        ...JSON.parse(sessionStorage.getItem('appConfig')),
       });
     } catch (error) {
       console.log(error);
@@ -23,4 +23,4 @@ class Config {
   }
 }
 
-export let config = new Config();
+export const config = new Config();

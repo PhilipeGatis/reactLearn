@@ -11,7 +11,7 @@ class AuthService {
     return !!config.emailAddress;
   }
 
-  authenticate(username, password) {
+  login(username, password) {
     // checks if the username is one of the known usernames, and the password is 'password'
     const checkCredentials = () => new Promise((resolve, reject) => {
       const validUsername = this.usernames.indexOf(username) !== -1;
@@ -39,7 +39,5 @@ class AuthService {
   }
 }
 
-export let authService = new AuthService();
-
-
+export const authService = new AuthService();
 

@@ -1,66 +1,81 @@
 import React, { PropTypes } from 'react';
-import { Form, FormGroup, ControlLabel, FormControl, Button, HelpBlock } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { FieldGroup } from '../field-group/component';
+import { changeForm } from '../../actions/login';
+
+const assign = Object.assign;
 
 export class LoginForm extends React.Component {
-  static propTypes = {
-    username: PropTypes.string,
-    usernameOptions: PropTypes.arrayOf(PropTypes.string),
-    password: PropTypes.string,
-    error: PropTypes.string,
-    loading: PropTypes.bool,
-    onChangeValues: PropTypes.func,
-    onSubmit: PropTypes.func,
+  // onSubmit call the passed onSubmit function
+  onSubmit(evt) {
+    evt.preventDefault();
+    this.props.onSubmit(this.props.data.username, this.props.data.password);
   }
 
-  handleSubmit = () => {
-    const { username, password } = this.props;
-    this.props.onSubmit({ username, password });
+  // Change the username in the app state
+  changeUsername(evt) {
+    let newState = this.mergeWithCurrentState({
+      username: evt.target.value,
+    });
+
+    this.emitChange(newState);
   }
 
-  handleChangeUsername = (event) => {
-    this.props.onChangeValues({ username: event.target.value, password: this.props.password });
+  // Change the password in the app state
+  changePassword(evt) {
+    let newState = this.mergeWithCurrentState({
+      password: evt.target.value,
+    });
+
+    this.emitChange(newState);
   }
 
-  handleChangePassword = (event) => {
-    this.props.onChangeValues({ username: this.props.username, password: event.target.value });
+  // Merges the current state with a change
+  mergeWithCurrentState(change) {
+    return assign(this.props.data, change);
+  }
+
+  // Emits a change of the form state to the application state
+  emitChange(newState) {
+    this.props.dispatch(changeForm(newState));
   }
 
   render() {
-    const { username, usernameOptions, password, error, loading } = this.props;
     return (
-      <Form horizontal>
-        <FormGroup controlId="formHorizontalEmail">
-          <ControlLabel>Username:</ControlLabel>
-          <FormControl
-            componentClass="select"
-            name="username"
-            id="username"
-            value={username}
-            onChange={this.handleChangeUsername}
-          >
-            <option value="" disabled />
-            {usernameOptions.map(option => <option key={option} value={option}>{option}</option>)}
-          </FormControl>
-        </FormGroup>
+      <Form horizontal onSubmit={this.onSubmit.bind(this)}>
+        <FieldGroup
+          label="Usuario:"
+          type="text"
+          name="user"
+          value={this.props.data.username}
+          onChange={this.changeUsername.bind(this)}
+        />
         <FieldGroup
           label="Password:"
           type="password"
           name="password"
-          value={password}
-          onChange={this.handleChangePassword}
+          value={this.props.data.password}
+          onChange={this.changePassword.bind(this)}
         />
-        {error ? <HelpBlock>{error}</HelpBlock> : null}
+        {this.props.errorMessage ?
+          <Alert bsStyle="danger">
+            {this.props.errorMessage}
+          </Alert> : null
+        }
         <div>
           <Button
-            type="button"
-            disabled={loading}
-            onClick={this.handleSubmit}
+            type="submit"
+            disabled={this.props.currentlySending}
           >
-            {loading ? <i className="fa fa-spin fa-spinner" /> : null} <span>Log in</span>
+            {this.props.currentlySending ? <i className="fa fa-spin fa-spinner" /> : null} <span>Entrar</span>
           </Button>
         </div>
       </Form>
     );
   }
-  }
+}
+
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+};

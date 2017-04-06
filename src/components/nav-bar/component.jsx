@@ -3,7 +3,6 @@ import { UISref } from 'ui-router-react';
 import { Navbar, NavDropdown, MenuItem, Nav } from 'react-bootstrap';
 import { authService } from '../../services/auth';
 
-let $state = {};
 export class NavBar extends React.Component {
 
   constructor(props) {
@@ -11,7 +10,6 @@ export class NavBar extends React.Component {
     this.handleSelect = this
       .handleSelect
       .bind(this);
-    console.log($state);
   }
 
   handleSelect(eventKey) {

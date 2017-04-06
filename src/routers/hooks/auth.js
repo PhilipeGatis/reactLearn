@@ -1,4 +1,4 @@
-import { authService } from '../../services/auth';
+import { store } from '../../store';
 
 export const Auth = {
   criteria: {
@@ -6,10 +6,14 @@ export const Auth = {
   },
 
   callback: (transition) => {
+    const { UserLoged } = store.getState();
+
     const $state = transition.router.stateService;
-    if (!authService.isAuthenticated()) {
+
+    if (!UserLoged.loggedIn) {
       return $state.target('Login', undefined, { location: false });
     }
+
     return null;
   },
 };
